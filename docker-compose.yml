@@ -6,8 +6,7 @@ services:
     restart: always
     environment:
       - TZ=Asia/Shanghai
-      - ARG_JASYPT_PASSWORD=default
-      - ACTIVE_PROFILES=dev
+      - ACTIVE_PROFILES=prd
     networks:
       - main
 
