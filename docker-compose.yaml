@@ -2,10 +2,12 @@ services:
   ja-hello-world:
     hostname: ja-hello-world
     image: 'ccr.ccs.tencentyun.com/a2cd/ja-hello-world:latest'
-    container_name: rs-hello-world
+    container_name: ja-hello-world
     restart: always
     environment:
       - TZ=Asia/Shanghai
+      - ARG_JASYPT_PASSWORD=default
+      - ACTIVE_PROFILES=dev
     networks:
       - main
 
