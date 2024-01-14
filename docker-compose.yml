@@ -6,6 +6,7 @@ services:
     restart: always
     environment:
       - TZ=Asia/Shanghai
+      - ACTIVE_PROFILES=prd
     networks:
       - main
 
