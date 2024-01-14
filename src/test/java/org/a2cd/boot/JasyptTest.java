@@ -18,14 +18,4 @@ class JasyptTest {
         assertEquals(plainText, decryptedText);
     }
 
-    @Test
-    void enTest() {
-        var plainText = "a2cd@Redis37255";
-        var aesEncryptor = new AES256TextEncryptor();
-        aesEncryptor.setPassword("7069a07715462d9da3d579c9e637acbc9622d9dcc698d374e53837a29e4a4af5");
-        var encryptedText = aesEncryptor.encrypt(plainText);
-        System.out.println(encryptedText);
-        var decryptedText = aesEncryptor.decrypt(encryptedText);
-        assertEquals(plainText, decryptedText);
-    }
 }
