@@ -8,4 +8,4 @@ ENV JASYPT_PASSWORD=$ARG_JASYPT_PASSWORD
 
 WORKDIR /app/
 COPY build/libs/ja-hello-world.jar /app/ja-hello-world.jar
-ENTRYPOINT ["java", "-Djasypt.encryptor.password=$JASYPT_PASSWORD","-jar", "ja-hello-world.jar"]
+ENTRYPOINT ["java", "-Djasypt.encryptor.password=$JASYPT_PASSWORD","-jar", "ja-hello-world.jar", "--spring.profiles.active=prd"]
