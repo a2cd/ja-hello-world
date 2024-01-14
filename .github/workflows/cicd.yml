@@ -25,7 +25,9 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle' # gradle, maven, sbt
       - name: Build src
-        run: ./gradlew clean bootJar
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean bootJar
       - name: Docker login
         uses: docker/login-action@v3
         with:
