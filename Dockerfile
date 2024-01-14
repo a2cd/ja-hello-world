@@ -11,3 +11,4 @@ ENV ACTIVE_PROFILES=$ARG_ACTIVE_PROFILES
 WORKDIR /app/
 COPY build/libs/ja-hello-world.jar /app/ja-hello-world.jar
 ENTRYPOINT ["java", "-Djasypt.encryptor.password=$JASYPT_PASSWORD", "-jar", "ja-hello-world.jar", "--spring.profiles.active=$ACTIVE_PROFILES"]
+EXPOSE 8080
