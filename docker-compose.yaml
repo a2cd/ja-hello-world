@@ -1,13 +1,14 @@
 services:
-  boot3api:
-    image: 'postgres:latest'
+  ja-hello-world:
+    hostname: ja-hello-world
+    image: 'ccr.ccs.tencentyun.com/a2cd/ja-hello-world:latest'
+    container_name: rs-hello-world
+    restart: always
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
-    ports:
-      - '5432'
-  redis:
-    image: 'redis:latest'
-    ports:
-      - '6379'
+      - TZ=Asia/Shanghai
+    networks:
+      - main
+
+networks:
+  main:
+    external: true

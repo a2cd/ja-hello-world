@@ -1,17 +1,57 @@
+buildscript { // for groovy的依赖, 必须在plugins{}块之前
+    repositories {
+        // mavenLocal()作用：与maven共同用下载的依赖
+        // 1. 优先找USER_HOME/.m2/settings.xml中配置的依赖存放地址
+        // 2. 如果没找到，找M2_HOME/conf/settings.xml中配置的依赖存放地址
+        // 3. 如果没有配置Maven的依赖存放地址则默认在USER_HOME/.m2/repository中找依赖
+        mavenLocal()
+        maven { url 'https://maven.aliyun.com/repository/public' } // public包含jcenter
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        mavenCentral()
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'org.a2cd'
-version = '0.0.1'
+repositories { // for code的依赖, 必须在plugins{}块之后
+    // mavenLocal()作用：与maven共同用下载的依赖
+    // 1. 优先找USER_HOME/.m2/settings.xml中配置的依赖存放地址
+    // 2. 如果没找到，找M2_HOME/conf/settings.xml中配置的依赖存放地址
+    // 3. 如果没有配置Maven的依赖存放地址则默认在USER_HOME/.m2/repository中找依赖
+    mavenLocal()
+    maven { url 'https://maven.aliyun.com/repository/public' } // public包含jcenter
+    maven { url 'https://maven.aliyun.com/repository/google' }
+    maven { url 'https://maven.aliyun.com/repository/spring' }
+    mavenCentral()
+}
+
+
+ext { // 全局变量
+    springModulithVersion = '1.1.0'
+}
 
 java {
     sourceCompatibility = '17'
 }
 
-jar.enabled = true
+jar {
+    enabled = true
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
+
+bootJar {
+    enabled = true
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
+
+group = 'org.a2cd'
+version = ''
+
 
 configurations {
     compileOnly {
@@ -19,19 +59,15 @@ configurations {
     }
 }
 
-repositories {
-    mavenCentral()
-}
 
-ext {
-    springModulithVersion = '1.1.0'
-}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -45,6 +81,16 @@ dependencyManagement {
 
 }
 
-tasks.named('test') {
+//tasks.named('test') {
+//
+//}
 
+tasks.register('printEnd') {
+    doLast {
+        println 'build complete'
+    }
 }
+
+
+
+
