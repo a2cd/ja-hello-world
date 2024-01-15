@@ -24,7 +24,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'gradle' # gradle, maven, sbt
-      - name: Build src
+      - name: Run build src
         run: |
           chmod +x ./gradlew && ./gradlew clean bootJar
       - name: Docker login
@@ -33,7 +33,7 @@ jobs:
           registry: ${{ secrets.REGISTRY_DOMAIN }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Build and push image
+      - name: Run Build and push docker image
         env:
           NAMESPACE: a2cd
           IMAGE_NAME: ja-hello-world
@@ -56,5 +56,5 @@ jobs:
             IdentityFile ~/.ssh/$KEY_FILE
             StrictHostKeyChecking no
           END
-      - name: Deploy
-        run: ssh a2cd 'cd /usr/local/repo/ja-hello-world/ && docker-compose pull && docker-compose up -d'
+      - name: Run deploy
+        run: ssh a2cd 'cd /usr/local/repo/ja-hello-world/ && git pull origin main && docker-compose pull && docker-compose up -d'

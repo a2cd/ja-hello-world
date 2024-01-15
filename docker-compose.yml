@@ -8,6 +8,7 @@ services:
       - TZ=Asia/Shanghai
       - ACTIVE_PROFILES=prd
       - VM_OPTS=-server -Xms64m -Xmx128m
+      - HELLO=hello
     networks:
       - main
 
