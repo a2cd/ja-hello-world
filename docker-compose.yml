@@ -7,6 +7,7 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - ACTIVE_PROFILES=prd
+      - JVM_MAX_HEAP=128m
     networks:
       - main
 
