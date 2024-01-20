@@ -7,6 +7,7 @@ on:
     branches: [ "main" ]
 
 env:
+  TZ: Asia/Shanghai
   BUILD_GREETING: hello
   SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5'
   REGISTRY: ${{ secrets.REGISTRY_DOMAIN }}
@@ -33,7 +34,7 @@ jobs:
           registry: ${{ secrets.REGISTRY_DOMAIN }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-      - name: Run Build and push docker image
+      - name: Run build and push docker image
         env:
           NAMESPACE: a2cd
           IMAGE_NAME: ja-hello-world
