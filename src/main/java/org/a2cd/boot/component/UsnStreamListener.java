@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 
 @Slf4j
-@Component
+// @Component
 @AllArgsConstructor
 public class UsnStreamListener implements StreamListener<String, ObjectRecord<String, String>> {
     private StringRedisTemplate stringRedisTemplate;

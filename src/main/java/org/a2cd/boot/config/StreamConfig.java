@@ -23,7 +23,7 @@ import java.time.Duration;
  */
 
 @Slf4j
-@Configuration
+// @Configuration
 @AllArgsConstructor
 public class StreamConfig {
 
