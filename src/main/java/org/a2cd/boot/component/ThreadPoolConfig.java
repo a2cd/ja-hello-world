@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @since 2024-01-20
  */
 
-// @Configuration
+@Configuration
 public class ThreadPoolConfig {
 
     @Primary

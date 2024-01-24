@@ -2,6 +2,7 @@ package org.a2cd.boot.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.a2cd.boot.consts.RedisKey;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.stream.ReadOffset;
@@ -37,13 +38,13 @@ public class RedisProducer {
 
     @GetMapping("/blockList/produce/{msg}")
     public String produceMsgIntoBlockList(@PathVariable String msg) {
-        stringRedisTemplate.opsForList().leftPush("block-list", msg);
+        stringRedisTemplate.opsForList().leftPush(RedisKey.BLOCK_LIST, msg);
         return "hello";
     }
 
     @GetMapping("/blockingQueue/produce/{msg}")
     public String produceMsgIntoBlockingQueue(@PathVariable String msg) {
-        var blockingDeque = redissonClient.getBlockingDeque("blocking-queue");
+        var blockingDeque = redissonClient.getBlockingDeque(RedisKey.BLOCK_QUEUE);
         try {
             blockingDeque.putFirst(msg);
             log.info("将消息: {} 插入到队列。", msg);

@@ -3,6 +3,8 @@ package org.a2cd.boot.component;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.a2cd.boot.consts.RedisKey;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -22,6 +24,7 @@ import java.util.concurrent.*;
 public class BlockListConsumer implements InitializingBean, DisposableBean {
 
     private StringRedisTemplate stringRedisTemplate;
+    private RedissonClient redissonClient;
 
     @Override
     public void afterPropertiesSet() {
@@ -33,11 +36,31 @@ public class BlockListConsumer implements InitializingBean, DisposableBean {
         });
         tp.execute(() -> {
             while (true) {
+                var rlock = redissonClient.getLock("app-0");
                 try {
-                    var s = stringRedisTemplate.opsForList().rightPop("block-list", Duration.ofSeconds(0));
+                    // waitTime 未获取到锁等待多久再次获取
+                    // leaseTime 预计需要获取锁多少时间，配置此项不会有watchdog续命
+                    // time是waitTime
+                    var acquired = rlock.tryLock( 30, TimeUnit.SECONDS);
+                    if (!acquired) {
+                        continue;
+                    }
+                    var s = stringRedisTemplate.opsForList().rightPop(RedisKey.BLOCK_LIST, Duration.ofSeconds(0));
                     log.info("val={}, thread={}", s, Thread.currentThread().getName());
+
+                    Thread.sleep(30000);
+
                 } catch (Exception e) {
                     log.error("err: ", e);
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } finally {
+                    if(rlock.isHeldByCurrentThread()) {
+                        rlock.unlock();
+                    }
                 }
             }
         });

@@ -2,6 +2,7 @@ package org.a2cd.boot.component;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.a2cd.boot.consts.RedisKey;
 import org.redisson.api.RedissonClient;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -34,7 +35,7 @@ public class BlockingQueueConsumer implements ApplicationRunner {
             return t;
         });
         tp.execute(() -> {
-            var blockingDeque = redissonClient.getBlockingDeque("blocking-queue");
+            var blockingDeque = redissonClient.getBlockingDeque(RedisKey.BLOCK_QUEUE);
             while (true) {
                 try {
                     var msg = blockingDeque.takeLast();

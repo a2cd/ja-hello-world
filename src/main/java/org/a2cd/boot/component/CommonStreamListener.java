@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Slf4j
-// @Component
+@Component
 @AllArgsConstructor
 public class CommonStreamListener implements StreamListener<String, ObjectRecord<String, String>> {
     private StringRedisTemplate stringRedisTemplate;
